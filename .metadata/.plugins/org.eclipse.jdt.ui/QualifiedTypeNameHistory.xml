@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.ctre.CANTalon.FeedbackDevice"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SerialPort.Port"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon.TalonControlMode"/>
+<fullyQualifiedTypeName name="org.usfirst.util.JoystickPOVButton"/>
+</qualifiedTypeNameHistroy>

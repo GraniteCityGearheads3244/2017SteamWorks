@@ -17,7 +17,7 @@ import org.usfirst.frc3244.Watson.Robot;
 import org.usfirst.frc3244.Watson.RobotMap;
 import org.usfirst.frc3244.Watson.commands.*;
 import org.usfirst.frc3244.Watson.commands.Drive.Drive_Robot_Robot_Oriented_Mecanum;
-import org.usfirst.util.Utils;
+//import org.usfirst.util.Utils;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -279,8 +279,8 @@ public class DriveTrain extends Subsystem {
 			SmartDashboard.putNumber("Back Right Output Voltage",
 					-m_talons[kBackRight].getOutputVoltage());
 
-			SmartDashboard.putNumber("Gyro",
-					Utils.twoDecimalPlaces(headingGyro.getAngle()));
+			//SmartDashboard.putNumber("Gyro",
+					//Utils.twoDecimalPlaces(headingGyro.getAngle()));
 			SmartDashboard.putNumber("Desired Heading", m_desiredHeading);
 
 			SmartDashboard.putBoolean("Turbo Mode", Robot.oi.driveTurboMode());
