@@ -84,10 +84,10 @@ public class OI {
         y_1.whileHeld(new Winch_Jog(.5));
         
         lb_1 = new JoystickButton(xbox_1, 5);
-        lb_1.whileHeld(new Gear_Lift_Jog_Down());
+        lb_1.whileHeld(new WristJogDown());
 
         rb_1 = new JoystickButton(xbox_1, 6);
-        rb_1.whileHeld(new Gear_Lift_Jog_Up());
+        rb_1.whileHeld(new WristJogUp());
 
         reset_1 = new JoystickButton(xbox_1, 7);
         //reset_1.whenPressed(new CMD());

@@ -87,7 +87,7 @@ public class OI {
         lb_1.whileHeld(new Gear_Lift_Jog_Down());
 
         rb_1 = new JoystickButton(xbox_1, 6);
-        rb_1.whileHeld(new Gear_Lift_Jog_Up());
+        rb_1.whileHeld(new WristJogUp());
 
         reset_1 = new JoystickButton(xbox_1, 7);
         //reset_1.whenPressed(new CMD());
