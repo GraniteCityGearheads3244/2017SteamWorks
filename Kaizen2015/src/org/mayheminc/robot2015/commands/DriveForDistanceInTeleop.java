@@ -13,6 +13,7 @@ public class DriveForDistanceInTeleop extends Command {
     private double m_y;
     private double m_rotation;
     private double m_distance;
+    private double m_timeout;
     Timer m_timer = new Timer();
 
     public DriveForDistanceInTeleop(double x, double y, double rotation, double distance) {
@@ -21,7 +22,9 @@ public class DriveForDistanceInTeleop extends Command {
     	m_y = y;
     	m_rotation = rotation;
     	m_distance = distance;
+    	m_timeout = 0;
     }
+    
     
     // Called just before this Command runs the first time
     protected void initialize() {

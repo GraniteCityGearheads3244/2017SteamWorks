@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.ctre.CANTalon.FeedbackDevice"/>
-<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SerialPort.Port"/>
-<fullyQualifiedTypeName name="com.ctre.CANTalon.TalonControlMode"/>
 <fullyQualifiedTypeName name="org.usfirst.util.JoystickPOVButton"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.commands.FlyWheel_Jog"/>
+<fullyQualifiedTypeName name="java.awt.Robot"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.commands.Deliver_Fuel"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.subsystems.Fuel_Delivery"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Timer"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.commands.WristToSetpoit"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.commands.Drive_Strafe_To_Load_Gear_On_Peg"/>
+<fullyQualifiedTypeName name="org.usfirst.util.JoystickAxisButton"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.commands.Intake_Fuel"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.Watson.Robot"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DoubleSolenoid.Value"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.buttons.Button"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team3244.util.JoystickAxisButton"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SerialPort.Port"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.commands.Wrist_to_Setpoint"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SerialPort"/>
+<fullyQualifiedTypeName name="com.kauailabs.navx.frc.AHRS"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon.FeedbackDevice"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon.TalonControlMode"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.PowerDistributionPanel"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.util.Utils"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DriverStation"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.RobotMap"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Relay.Value"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.smartdashboard.SmartDashboard"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.Robot"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.commands.FlyWheel_Run"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
 </qualifiedTypeNameHistroy>

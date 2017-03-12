@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 
-	CANTalon _talon = new CANTalon(1);	
+	CANTalon _talon = new CANTalon(5);	
 	Joystick _joy = new Joystick(0);	
 	StringBuilder _sb = new StringBuilder();
 	int _loops = 0;
@@ -24,17 +24,17 @@ public class Robot extends IterativeRobot {
         /* first choose the sensor */
         _talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
         _talon.reverseSensor(true);
-        _talon.configEncoderCodesPerRev(169);
+        _talon.configEncoderCodesPerRev(80);
         //_talon.configEncoderCodesPerRev(XXX), // if using FeedbackDevice.QuadEncoder
         //_talon.configPotentiometerTurns(XXX), // if using FeedbackDevice.AnalogEncoder or AnalogPot
 
         /* set the peak and nominal outputs, 12V means full */
         _talon.configNominalOutputVoltage(+0.0f, -0.0f);
-        _talon.configPeakOutputVoltage(+12.0f, -12.0f);
+        _talon.configPeakOutputVoltage(+12.0f, -0.0f);
         /* set closed loop gains in slot0 */
         _talon.setProfile(0);
-        _talon.setF(0.1097);
-        _talon.setP(0.22);
+        _talon.setF(8.52);
+        _talon.setP(0);
         _talon.setI(0.0); 
         _talon.setD(0);
         
@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	double cle = 0;
     	/* get gamepad axis */
     	double leftYstick = _joy.getAxis(AxisType.kY);
     	double motorOutput = _talon.getOutputVoltage() / _talon.getBusVoltage();
@@ -58,13 +59,14 @@ public class Robot extends IterativeRobot {
         
         if(_joy.getRawButton(1)){
         	/* Speed mode */
-        	double targetSpeed = SmartDashboard.getNumber("Set Point");//leftYstick * 1500.0; /* 1500 RPM in either direction */
+        	double targetSpeed = leftYstick * 900; /* 1500 RPM in either direction */
         	_talon.changeControlMode(TalonControlMode.Speed);
         	_talon.set(targetSpeed); /* 1500 RPM in either direction */
 
         	/* append more signals to print when in speed mode. */
             _sb.append("\terr:");
-            _sb.append(_talon.getClosedLoopError());
+            cle = _talon.getClosedLoopError();
+            _sb.append(cle);
             _sb.append("\ttrg:");
             _sb.append(targetSpeed);
         } else {
@@ -73,9 +75,12 @@ public class Robot extends IterativeRobot {
         	_talon.set(leftYstick);
         }
 
+        
         if(++_loops >= 10) {
         	_loops = 0;
         	System.out.println(_sb.toString());
+        	SmartDashboard.putNumber("Encoder Pos", _talon.getEncPosition());// getPosition());
+        	SmartDashboard.putNumber("CLE", cle);
         }
         _sb.setLength(0);
     }
