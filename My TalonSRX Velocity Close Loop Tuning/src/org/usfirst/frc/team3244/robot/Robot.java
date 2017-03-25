@@ -29,16 +29,16 @@ import com.ctre.CANTalon.TalonControlMode;
 
 public class Robot extends IterativeRobot {
   
-	CANTalon _talon = new CANTalon(5);	
+	CANTalon _talon = new CANTalon(1);	
 	Joystick _joy = new Joystick(0);	
 	StringBuilder _sb = new StringBuilder();
 	int _loops = 0;
 	
 	public void robotInit() {
         /* first choose the sensor */
-        _talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+        _talon.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         _talon.reverseSensor(true);
-        _talon.configEncoderCodesPerRev(80); // if using FeedbackDevice.QuadEncoder
+        //_talon.configEncoderCodesPerRev(80); // if using FeedbackDevice.QuadEncoder
         //_talon.configPotentiometerTurns(XXX), // if using FeedbackDevice.AnalogEncoder or AnalogPot
 
         /* set the peak and nominal outputs, 12V means full */
@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot {
         _talon.configPeakOutputVoltage(+12.0f, -12.0f);
         /* set closed loop gains in slot0 */
         _talon.setProfile(0);
-        _talon.setF(2.13);
+        _talon.setF(0.337);
         _talon.setP(0);
         _talon.setI(0); 
         _talon.setD(0);
@@ -68,7 +68,7 @@ public class Robot extends IterativeRobot {
         
         if(_joy.getRawButton(1)){
         	/* Speed mode */
-        	double targetSpeed = leftYstick * 900; /* 1500 RPM in either direction */
+        	double targetSpeed = leftYstick * 445; /* 1500 RPM in either direction */
         	SmartDashboard.putNumber("Joy Y", leftYstick);
         	_talon.changeControlMode(TalonControlMode.Speed);
         	_talon.set(targetSpeed); /* 1500 RPM in either direction */

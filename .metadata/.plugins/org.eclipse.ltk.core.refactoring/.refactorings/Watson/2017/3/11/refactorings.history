@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;turnController.java&apos; to &apos;HungryVonHippo/src/org.usfirst.frc3244.HungryVonHippo.commands&apos;&#x0D;&#x0A;- Original project: &apos;Watson&apos;&#x0D;&#x0A;- Destination element: &apos;HungryVonHippo/src/org.usfirst.frc3244.HungryVonHippo.commands&apos;&#x0D;&#x0A;- Original element: &apos;org.usfirst.frc3244.Watson.commands.turnController.java&apos;" description="Copy compilation unit" destination="=HungryVonHippo/src&lt;org.usfirst.frc3244.HungryVonHippo.commands" element1="/src&lt;org.usfirst.frc3244.Watson.commands{turnController.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1489331372543" units="1" version="1.0"/>
+</session>
