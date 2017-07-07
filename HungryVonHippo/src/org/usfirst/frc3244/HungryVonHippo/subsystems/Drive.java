@@ -21,6 +21,7 @@ import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -47,6 +48,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *	Code to set Quad encoders
  *
  *Changed Gyro to use the NavX Mini
+ *
+ *We are Allowing rotation while crawling
  */
 
 /**
@@ -55,6 +58,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends Subsystem {
 
     private AHRS headingGyro = RobotMap.ahrs;
+    private ADXRS450_Gyro headingGyro_BCK = RobotMap.adrxs450_Gyro;
     
     private final CANTalon front_Left = RobotMap.drivemotor_Front_Left;
     private final CANTalon front_Right = RobotMap.drivemotor_Front_Right;
@@ -85,10 +89,10 @@ public class Drive extends Subsystem {
  	private boolean m_drivingAutoInTeleop = false;
  	
  	// driving scaling factors
- 	private static final double FORWARD_BACKWARD_FACTOR = 1.0;
- 	private static final double ROTATION_FACTOR = 1.25;
- 	private static final double STRAFE_FACTOR = 2.0;
- 	private static final double SLOW_FACTOR = 0.35; // scaling factor for (normal) "slow mode"
+ 	private static final double FORWARD_BACKWARD_FACTOR = RobotMap.RobotDriveTrainSettings.FORWARD_BACKWARD_FACTOR.get(); //FORWARD_BACKWARD_FACTOR = 1.0;
+ 	private static final double ROTATION_FACTOR = RobotMap.RobotDriveTrainSettings.ROTATION_FACTOR.get(); //ROTATION_FACTOR = 1.25;
+ 	private static final double STRAFE_FACTOR = RobotMap.RobotDriveTrainSettings.STRAFE_FACTOR.get(); //STRAFE_FACTOR = 2.0;
+ 	private static final double SLOW_FACTOR = 0.35; // scaling factor for (normal) "slow mode" .35
  	private static final double CRAWL_INPUT = 0.35; // "crawl" is a gentle control input
  	public static final double ALIGN_SPEED = 0.10;
 
@@ -98,7 +102,12 @@ public class Drive extends Subsystem {
  	
  	//
  	private boolean m_preserveHeading_Enable = true; 
+ 	private int m_preserveHeading_Iterations = 50;//5 Original Driver Didn't like the snappy action
+ 	private double kP_preserveHeading_Telepo = 0.005; // 0.025; Original Driver Didn't like the snappy action
+ 	private double kP_preserveHeading_Auto = 0.025; // 0.025
  	private boolean reportERROR_ONS = false;
+ 	
+ 	private boolean m_Craling = false;
   
 
     // Put methods for controlling this subsystem
@@ -205,7 +214,7 @@ public class Drive extends Subsystem {
 
 	public void setWheelPIDF() {
 		int talonIndex = 0;
-		double wheelP = 0.0;//1.02;//RobotPreferences.getWheelP();
+		double wheelP = 0.5;//1.02;//RobotPreferences.getWheelP();
 		double wheelI = 0.0;//RobotPreferences.getWheelI();
 		double wheelD = 0.0;//RobotPreferences.getWheelD();
 		double wheelF = 0.337;// 0.337 for 10.75 gear box 0.416 for 12.7;//RobotPreferences.getWheelF();
@@ -221,27 +230,45 @@ public class Drive extends Subsystem {
 	
 	public void setgyroOffset(double adjustment){
 		headingGyro.setAngleAdjustment(adjustment);
+		//headingGyro_BCK.setAngledAdjustimenet(adjustment); // Not available
 	}
 	
 	public double getHeading() {
-		return headingGyro.getAngle();
+		double heading;
+		if(headingGyro.isConnected()){
+			heading = headingGyro.getAngle();
+		}else{
+			heading = headingGyro_BCK.getAngle() + headingGyro.getAngleAdjustment();//Try to use the Back up Gyro with the angle Adjustment
+		}
+		
+		return heading;
 		//return headingGyro.getFusedHeading();
 	}
 
 	public void resetHeadingGyro() {
 		headingGyro.reset();
+		headingGyro_BCK.reset();
 		m_desiredHeading = 0.0;
 	}
 
 	public void clearDesiredHeading() {
 		m_desiredHeading = getHeading();
 	}
+	
+	public void setdesiredHeading(double heading){
+		m_desiredHeading = heading;
+	}
 
 	public void recalibrateHeadingGyro() {
 		headingGyro.reset();
+		headingGyro_BCK.reset();
 //		headingGyro.free();
 //		headingGyro = new AnalogGyro(RobotMap.HEADING_GYRO);
 //		m_desiredHeading = 0.0;
+	}
+	
+	public double getRobotTilt(){
+		return headingGyro.getRoll();
 	}
 
 	public void setFieldOrientedDrive(boolean enable){
@@ -275,6 +302,15 @@ public class Drive extends Subsystem {
 			m_talons[talonIndex].enableControl();
 		}
 	}
+	
+	public int getLoopMode(int talonIndex){
+		if(talonIndex < kMaxNumberOfMotors){
+			return m_talons[talonIndex].getControlMode().getValue();
+		}else{
+			return 0;
+		}
+		
+	}
 
 	public void toggleClosedLoopMode() {
 		if (!m_closedLoopMode) {
@@ -282,6 +318,19 @@ public class Drive extends Subsystem {
 		} else {
 			setOpenLoopMode();
 		}
+	}
+	
+	public void set_PreserveHeading(boolean set){
+		if(set && (Math.abs(getRobotTilt())<10)){
+			m_preserveHeading_Enable = true;
+			m_iterationsSinceRotationCommanded = 0;
+		}else{
+			m_preserveHeading_Enable = false;
+		}
+	
+		
+		//******* Per Driver request m_preserveHeading_Enable = false;
+		//m_preserveHeading_Enable = false;
 	}
 	
 	public void updateSmartDashboard() {
@@ -445,29 +494,29 @@ public class Drive extends Subsystem {
 		if (Robot.oi.crawlBackward()) {
 			xIn = 0.0;
 			yIn = -CRAWL_INPUT;
-			//rotation = 0.0;
-		}
-
-		if (Robot.oi.crawlForward()) {
+			rotation = rotation * .5;
+			m_Craling = true;
+		}else if (Robot.oi.crawlForward()) {
 			xIn = 0.0;
 			yIn = CRAWL_INPUT;
-			//rotation = 0.0;
-		}
-
-		if (Robot.oi.crawlRight()) {
+			rotation = rotation * .5;
+			m_Craling = true;
+		}else if (Robot.oi.crawlRight()) {
 			xIn = CRAWL_INPUT;
 			yIn = 0.0;
-			//rotation = 0.0;
-		}
-
-		if (Robot.oi.crawlLeft()) {
+			rotation = rotation * .5;
+			m_Craling = true;
+		}else if (Robot.oi.crawlLeft()) {
 			xIn = -CRAWL_INPUT;
 			yIn = 0.0;
-			//rotation = 0.0;
+			rotation = rotation * .5;
+			m_Craling = true;
+		}else{
+			m_Craling = false;
 		}
 
 		//Disable Field Oriantated if Gyro Fails
-		boolean IMU_Connected = headingGyro.isConnected();
+		boolean IMU_Connected = true;//headingGyro.isConnected();
 		if(!IMU_Connected){
 			m_preserveHeading_Enable = false;
 			m_fieldOrientedDrive = false;
@@ -504,15 +553,15 @@ public class Drive extends Subsystem {
 		// scale inputs to compensate for misbalance of speeds in different
 		// directions
 		xIn = xIn * STRAFE_FACTOR;
-		SmartDashboard.putNumber("xIn = ", xIn);
+		
 		yIn = yIn * FORWARD_BACKWARD_FACTOR;
-		SmartDashboard.putNumber("yIn = ", yIn);
+		
 		rotation = rotation * ROTATION_FACTOR;
 
 		// apply "slowFactor" if not in "Turbo Mode"
-		if (!Robot.oi.driveTurboMode()) {
-			xIn = xIn * SLOW_FACTOR;
-			yIn = yIn * SLOW_FACTOR;
+		if (!Robot.oi.driveTurboMode() || !m_Craling) {
+			xIn = xIn * 1.0;//SLOW_FACTOR;
+			yIn = yIn * 1.0;//SLOW_FACTOR;
 			rotation = rotation * SLOW_FACTOR;
 		}
 
@@ -528,16 +577,22 @@ public class Drive extends Subsystem {
 		}
 
 		// preserve heading when recently stopped commanding rotations
-		if (m_iterationsSinceRotationCommanded == 5) {
+		if (m_iterationsSinceRotationCommanded == m_preserveHeading_Iterations) {
 			m_desiredHeading = getHeading();
-		} else if (m_iterationsSinceRotationCommanded > 5) {
+		} else if (m_iterationsSinceRotationCommanded > m_preserveHeading_Iterations) {
 			if(m_preserveHeading_Enable){
-				rotation = (m_desiredHeading - getHeading()) / 40.0;
+				rotation = (m_desiredHeading - getHeading()) * kP_preserveHeading_Telepo; 
+				SmartDashboard.putNumber("MaintainHeaading ROtation", rotation);
 			}
 		}
 
 		// if no directions being commanded and driving in teleop, then let the "AutoInTeleop" take place
 		if (m_drivingAutoInTeleop) {
+			if(Math.abs(xIn)+Math.abs(yIn)>0){
+				//We had three instances that the Drive train did not respond to commands
+				//So if this is the problem we can fix it.
+				DriverStation.reportWarning("Can Not Drive Tele-op, m_drivingAutoInTeleop is active", false);
+			}
 			return;
 		}
 		
@@ -550,7 +605,7 @@ public class Drive extends Subsystem {
 
 		// preserve heading if no rotation is commanded
 		if ((-0.01 < rotation) && (rotation < 0.01)) {
-			rotation = (m_desiredHeading - getHeading()) / 40.0;
+			rotation = (m_desiredHeading - getHeading()) * kP_preserveHeading_Auto; //In Auto keep the snappy action
 		}
 		mecanumDriveCartesian(xIn, yIn, rotation);
 	}
@@ -578,7 +633,7 @@ public class Drive extends Subsystem {
 			m_desiredHeading = getHeading();
 		} else if (m_iterationsSinceRotationCommanded > 5) {
 			if(m_preserveHeading_Enable){
-				rotation = (m_desiredHeading - getHeading()) / 40.0;
+				rotation = (m_desiredHeading - getHeading()) * kP_preserveHeading_Auto; //In Auto keep the snappy action
 			}
 		}
 		

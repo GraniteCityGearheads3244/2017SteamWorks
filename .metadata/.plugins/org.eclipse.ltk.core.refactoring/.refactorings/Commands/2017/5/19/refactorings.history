@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;CommandTrue.java&apos; to &apos;Commands/src/org.usfirst.frc.team3244.robot.commands&apos;&#x0D;&#x0A;- Original project: &apos;Commands&apos;&#x0D;&#x0A;- Destination element: &apos;Commands/src/org.usfirst.frc.team3244.robot.commands&apos;&#x0D;&#x0A;- Original element: &apos;org.usfirst.frc.team3244.robot.commands.CommandTrue.java&apos;" description="Copy compilation unit" destination="/src&lt;org.usfirst.frc.team3244.robot.commands" element1="/src&lt;org.usfirst.frc.team3244.robot.commands{CommandTrue.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1494512621514" units="1" version="1.0"/>
+</session>

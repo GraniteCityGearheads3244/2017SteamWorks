@@ -29,6 +29,20 @@
 		<item value="512" key="DIALOG_X_ORIGIN"/>
 		<item value="6" key="DIALOG_Y_ORIGIN"/>
 	</section>
+	<section name="org.eclipse.ui.internal.dialogs.WorkbenchEditorsDialog">
+		<item value="0" key="sort"/>
+		<item value="false" key="allPersp"/>
+		<list key="columns">
+			<item value="225"/>
+			<item value="451"/>
+		</list>
+		<list key="bounds">
+			<item value="447"/>
+			<item value="102"/>
+			<item value="706"/>
+			<item value="489"/>
+		</list>
+	</section>
 	<section name="ImportExportAction">
 		<item value="org.eclipse.ui.wizards.import.ExternalProject" key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID"/>
 		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">

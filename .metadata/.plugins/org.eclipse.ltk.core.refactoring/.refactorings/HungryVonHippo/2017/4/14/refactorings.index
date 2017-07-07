@@ -1,0 +1,41 @@
+1491109146475	Copy compilation unit
+1491109178923	Rename type 'Vision_Right_Light_Toggle'
+1491175594418	Copy compilation unit
+1491175978288	Copy compilation unit
+1491177132831	Copy compilation unit
+1491177898361	Rename type 'Drive_Set_Gyro_Chooser'
+1491178645282	Rename type 'Drive_Set_Gyro'
+1491178663175	Copy compilation unit
+1491179098228	Delete element
+1491179117120	Rename type 'Drive_Set_Gyro_North'
+1491179669134	Rename type 'toggleImage'
+1491179695732	Copy compilation unit
+1491180297303	Copy compilation unit
+1491180379406	Copy compilation unit
+1491180589414	Rename method 'getScoredRawTargetXpos'
+1491180676618	Rename method 'score_X_Alilnment'
+1491180757909	Rename method 'getScaledTargetXpos'
+1491180780077	Rename method 'getAngle_ToTarget'
+1491180963175	Rename field 'IMG_WIDTH'
+1491180976887	Rename field 'IMG_HEIGHT'
+1491181146709	Rename field 'table'
+1491185647810	Copy compilation unit
+1491186864247	Rename type 'DriveTrackPegPID'
+1491187438585	Delete element
+1491187977119	Rename type 'DriveForDistance'
+1491187997356	Rename type 'DriveForDistanceInTeleop'
+1491188015598	Rename type 'DriveForDistanceWithDeceleration'
+1491188039083	Rename type 'DriveSwitchFOD'
+1491188053956	Rename type 'DriveTrackBoiler'
+1491188066385	Rename type 'DriveTrackBoilerPID'
+1491188082211	Rename type 'DriveTurnToHeaddingInTeleop'
+1491188095062	Rename type 'DriveTurnToSetpoint'
+1491188113566	Rename type 'DriveTurnToSetpointInTeleop'
+1491188125271	Rename type 'ElevatorSet'
+1491225595017	Delete element
+1491225604627	Delete element
+1491227390808	Delete element
+1491238136271	Rename type 'Auto_06'
+1491239199747	Copy compilation unit
+1491239216039	Rename type 'Auto_04_Blue_Boiler_Mobility'
+1491239231450	Rename type 'Auto_04_Red_Boiler'

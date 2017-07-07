@@ -2,22 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="m_direction" key="selection"/>
+		<item value="setClos" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="m_direction"/>
-			<item value="kBoth"/>
-			<item value="m_preserveHeading_Enable"/>
-			<item value="AxisCamera"/>
-			<item value="addAxis"/>
-			<item value="ip"/>
-			<item value="m_heading"/>
-			<item value="m_fieldOrientedDrive"/>
+			<item value="setclos"/>
+			<item value="winchlimitSwitch_Left"/>
+			<item value="RobotIO_climb"/>
+			<item value="laun"/>
+			<item value="STRAFE"/>
+			<item value="start_xBox_Driver"/>
+			<item value="getRequirements"/>
+			<item value="m_requirements"/>
 		</list>
 		<list key="replacehistory">
+			<item value="XBOX"/>
 			<item value="xBox_Driver"/>
 			<item value="_xBox_CoDriver"/>
 			<item value="xBox_CoDriver"/>
