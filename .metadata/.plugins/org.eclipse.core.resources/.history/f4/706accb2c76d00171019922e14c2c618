@@ -36,6 +36,6 @@ public class Auto_05_Blue_Boiler_Mobility extends CommandGroup {
     		//addSequential(new  Drive_Turn_To_Setpoint(0.0, 0.0, 0),3); 
     	//or
     		//addSequential(new  Drive_Turn_To_Setpoint(0.0, 0.4, 0),3); 
-    	addSequential(new Drive_For_Distance(0.0, 0.5, 0.0, 17, 0.0),5);
+    	addSequential(new Drive_For_Distance(0.0, 0.6, 0.0, 17, 0.0),5);
     }
 }

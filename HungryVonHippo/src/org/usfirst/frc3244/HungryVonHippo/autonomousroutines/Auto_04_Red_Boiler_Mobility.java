@@ -28,7 +28,7 @@ public class Auto_04_Red_Boiler_Mobility extends CommandGroup {
     	//Start unloading
     	
     	//With Vision
-    	addSequential(new DeliverFuel_ConditionalCommand(),10);
+    	addSequential(new DeliverFuel_ConditionalCommand(),7);
     	//addSequential(new CG_FireFuel_WithVision(),10);
     	//With out Vision
     	//addSequential(new FlyWheel_Run_Delay_Indexer_Use_Flywheel_Pot(),10);
@@ -39,6 +39,6 @@ public class Auto_04_Red_Boiler_Mobility extends CommandGroup {
 			//addSequential(new  Drive_Turn_To_Setpoint(0.0, 0.0, 0),3); 
     	//or
 			//addSequential(new  Drive_Turn_To_Setpoint(0.0, 0.4, 0),3); 
-    	addSequential(new Drive_For_Distance(0.0, 0.6, 0.0, 17, 0.0),5);
+    	addSequential(new Drive_For_Distance(0.0, 0.5, 0.0, 17, 0.0),5);
     }
 }
