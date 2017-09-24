@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="C:\Users\Owner\navx-mxp\java\src" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="C:\Users\Owner\wpilib\user\java\lib" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="filter_imports;" key="filters_last_used"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="true" key="renameSubpackages"/>
