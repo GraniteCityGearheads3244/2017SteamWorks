@@ -20,7 +20,7 @@ public class Auto_01_1_Peg_Right extends CommandGroup {
     	// * not using the Direction Chooser to Buggy addSequential(new Drive_Set_Gyro_Chooser(),1); //Not set
     	addSequential(new Drive_Set_Gyro(180.0),1);
     	//Revere to base line keeping a heading of 180.0deg
-    	addSequential(new Drive_For_Distance(0.0, -0.3, 0.0, 17.5, 179.9));  //Practice Match 6 Was 17.0
+    	addSequential(new Drive_For_Distance(0.0, -0.3, 0.0, 18, 179.9));  //Practice Match 6 Was 17.0
     	//Set Wrist to present Gear and spin to pin
     	addParallel(new Wrist_to_Setpoint(Robot.wrist.PRESENT_GEAR_ON_PEG),1);
     	addSequential(new Drive_Turn_To_Setpoint(0.0, 0.0, ROBOT_TO_PEG_ANGLE),2);
