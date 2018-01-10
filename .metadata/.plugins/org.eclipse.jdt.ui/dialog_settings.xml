@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="C:\Users\Owner\wpilib\user\java\lib" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="C:\Users\Apple\wpilib\user\java\lib" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="filter_imports;" key="filters_last_used"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="true" key="renameSubpackages"/>
@@ -66,6 +66,8 @@
 		<item value="false" key="create_package_info_java"/>
 	</section>
 	<section name="completion_proposal_size">
+		<item value="253" key="size.y"/>
+		<item value="497" key="size.x"/>
 	</section>
 	<section name="JavaElementSearchActions">
 	</section>

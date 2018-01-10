@@ -84,6 +84,8 @@ import org.usfirst.frc3244.HungryVonHippo.util.Utils;
  */
 public class Robot extends IterativeRobot {
 
+	public static int M_WPI_TalonSRX_config_TimeoutMs = 0;
+	
     //public static final boolean DEBUG = true;
     public static final boolean DEBUG = false;
     private static final boolean DISABLE_SENDABLE_CHOOSER = false;

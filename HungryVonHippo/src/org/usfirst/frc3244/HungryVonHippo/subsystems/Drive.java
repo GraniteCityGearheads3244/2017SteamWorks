@@ -16,9 +16,11 @@ import org.usfirst.frc3244.HungryVonHippo.RobotMap;
 import org.usfirst.frc3244.HungryVonHippo.commands.*;
 import org.usfirst.frc3244.HungryVonHippo.util.Utils;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.*;
+//import com.ctre.CANTalon;
+//import com.ctre.CANTalon.FeedbackDevice;
+//import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -50,21 +52,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *Changed Gyro to use the NavX Mini
  *
  *We are Allowing rotation while crawling
+ *
+ *2018 Porting over to 2018 WPI_TalonSRX
+ *
  */
 
 /**
  *
  */
 public class Drive extends Subsystem {
-
+	
+	//private boolean MISSING_METHOD;
+	
     private AHRS headingGyro = RobotMap.ahrs;
     private ADXRS450_Gyro headingGyro_BCK = RobotMap.adrxs450_Gyro;
     
-    private final CANTalon front_Left = RobotMap.drivemotor_Front_Left;
-    private final CANTalon front_Right = RobotMap.drivemotor_Front_Right;
-    private final CANTalon back_Left = RobotMap.drivemotor_Back_Left;
-    private final CANTalon back_Right = RobotMap.drivemotor_Back_Right;
-
+    private final WPI_TalonSRX front_Left = RobotMap.drivemotor_Front_Left;
+    private final WPI_TalonSRX front_Right = RobotMap.drivemotor_Front_Right;
+    private final WPI_TalonSRX back_Left = RobotMap.drivemotor_Back_Left;
+    private final WPI_TalonSRX back_Right = RobotMap.drivemotor_Back_Right;
+    
  // member variables for Mecanum drive
  	private static final int kMaxNumberOfMotors = 4;
  	private final int m_invertedMotors[] = new int[kMaxNumberOfMotors];
@@ -75,7 +82,7 @@ public class Drive extends Subsystem {
 
 
  	// create objects needed for independent control of each wheel
- 	private CANTalon[] m_talons = new CANTalon[kMaxNumberOfMotors];
+ 	private WPI_TalonSRX[] m_talons = new WPI_TalonSRX[kMaxNumberOfMotors];
  	private double m_wheelSpeeds[] = new double[kMaxNumberOfMotors];
  	private double m_zeroPositions[] = new double[kMaxNumberOfMotors];
 
@@ -98,6 +105,7 @@ public class Drive extends Subsystem {
 
  	// member variables to support closed loop mode
  	private boolean m_closedLoopMode = true;
+ 	private ControlMode m_closedLoopMode2018;
  	private double m_maxWheelSpeed = 445; //(10.5 Gear box = 445)//360(12.75 gear box);//550.0;     // empirically measured around 560 to 580	
  	
  	//
@@ -108,6 +116,7 @@ public class Drive extends Subsystem {
  	private boolean reportERROR_ONS = false;
  	
  	private boolean m_Craling = false;
+	
   
 
     // Put methods for controlling this subsystem
@@ -124,43 +133,55 @@ public class Drive extends Subsystem {
 
     	// set all Talon SRX encoder values to zero
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].setPosition(0);
+			//m_talons[talonIndex].setPosition(0);
+			m_talons[talonIndex].setSelectedSensorPosition(0, 0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
+	
 		}
 		
 		// set all the Talon feedback Devices
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+			//m_talons[talonIndex].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+			m_talons[talonIndex].configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
 		}
 		
 		// Configure Nominal Output Voltage
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].configNominalOutputVoltage(+0.0f, -0.0f);
+			//m_talons[talonIndex].configNominalOutputVoltage(+0.0f, -0.0f);
+			m_talons[talonIndex].configNominalOutputForward(0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
+			m_talons[talonIndex].configNominalOutputReverse(0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
 		}
 		
 		// Configure Peak Output Voltage
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].configPeakOutputVoltage(+12.0f, -12.0f);
+			//m_talons[talonIndex].configPeakOutputVoltage(+12.0f, -12.0f);
+			m_talons[talonIndex].configPeakOutputForward(0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
+			m_talons[talonIndex].configPeakOutputReverse(0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
 		}
 		
 		// set all the Talon SRX encoders to reverce
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].reverseSensor(true);
+			//m_talons[talonIndex].reverseSensor(true);
+			m_talons[talonIndex].setSensorPhase(true);
 		}
 
 		// put all Talon SRX into brake mode
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].enableBrakeMode(m_breakMode);
+			//m_talons[talonIndex].enableBrakeMode(m_breakMode);
+			m_talons[talonIndex].setNeutralMode(NeutralMode.Brake);
+			
 		}
 
 		// ensure ramp rate set accordingly
 		if (m_useVoltageRamp) {
 			for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-				m_talons[talonIndex].setVoltageRampRate(m_voltageRampRate);
+				//m_talons[talonIndex].setVoltageRampRate(m_voltageRampRate);
+				m_talons[talonIndex].configClosedloopRamp(1, Robot.M_WPI_TalonSRX_config_TimeoutMs);
 			}
 		} else {
 			// clear all voltage ramp rates
 			for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-				m_talons[talonIndex].setVoltageRampRate(0.0);
+				//m_talons[talonIndex].setVoltageRampRate(0.0);
+				m_talons[talonIndex].configClosedloopRamp(0, Robot.M_WPI_TalonSRX_config_TimeoutMs);
 			}
 		}
 		// Also need to set up the "inverted motors" array for the mecanum drive
@@ -197,7 +218,7 @@ public class Drive extends Subsystem {
 		int talonIndex = 0;
 		// record current positions as "zero" for all of the Talon SRX encoders
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_zeroPositions[talonIndex] = m_talons[talonIndex].getPosition();
+			m_zeroPositions[talonIndex] = m_talons[talonIndex].getSelectedSensorPosition(0);
 		}
 	}
 
@@ -206,7 +227,7 @@ public class Drive extends Subsystem {
 		double tempDistance = 0;
 		// add up the absolute value of the distances from each individual wheel
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			tempDistance += Math.abs(m_talons[talonIndex].getPosition()
+			tempDistance += Math.abs(m_talons[talonIndex].getSelectedSensorPosition(0)
 					- m_zeroPositions[talonIndex]);
 		}
 		return (tempDistance);
@@ -221,8 +242,11 @@ public class Drive extends Subsystem {
 
 		// set the PID values for each individual wheel
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].setPID(wheelP, wheelI, wheelD, wheelF, 0,
-					m_voltageRampRate, 0);
+			//m_talons[talonIndex].setPID(wheelP, wheelI, wheelD, wheelF, 0, m_voltageRampRate, 0);
+			m_talons[talonIndex].config_kP(0, wheelP, 0);
+			m_talons[talonIndex].config_kI(0, wheelI, 0);
+			m_talons[talonIndex].config_kD(0, wheelD, 0);
+			m_talons[talonIndex].config_kF(0, wheelF, 0);
 		}
 		DriverStation.reportError("setWheelPIDF: " + wheelP + " " + wheelI
 				+ " " + wheelD + " " + wheelF + "\n", false);
@@ -285,27 +309,35 @@ public class Drive extends Subsystem {
 	}
 
 	public void setClosedLoopMode() {
+		m_closedLoopMode2018 = ControlMode.Velocity;
+		/*
 		int talonIndex = 0;
 		m_closedLoopMode = true;
 		setWheelPIDF();
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
 			m_talons[talonIndex].changeControlMode(TalonControlMode.Speed);
 			m_talons[talonIndex].enableControl();
+			
 		}
+		*/
 	}
 
 	public void setOpenLoopMode() {
+		m_closedLoopMode2018 = ControlMode.PercentOutput;
+		/*
 		int talonIndex = 0;
 		m_closedLoopMode = false;
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
 			m_talons[talonIndex].changeControlMode(TalonControlMode.PercentVbus);
 			m_talons[talonIndex].enableControl();
 		}
+		*/
 	}
 	
 	public int getLoopMode(int talonIndex){
 		if(talonIndex < kMaxNumberOfMotors){
-			return m_talons[talonIndex].getControlMode().getValue();
+			//return m_talons[talonIndex].getControlMode().getValue();
+			return m_talons[talonIndex].getControlMode().value;
 		}else{
 			return 0;
 		}
@@ -335,7 +367,26 @@ public class Drive extends Subsystem {
 	
 	public void updateSmartDashboard() {
 
-		if (Robot.DEBUG) {			
+		if (Robot.DEBUG) {
+			SmartDashboard.putNumber("Front Left SRX Position",
+					m_talons[kFrontLeft].getSelectedSensorPosition(0) - m_zeroPositions[kFrontLeft]);
+			SmartDashboard.putNumber("Front Right SRX Position",
+					-(m_talons[kFrontRight].getSelectedSensorPosition(0) - m_zeroPositions[kFrontRight]));
+			SmartDashboard.putNumber("Back Left SRX Position",
+					m_talons[kBackLeft].getSelectedSensorPosition(0) - m_zeroPositions[kBackLeft]);
+			SmartDashboard.putNumber("Back Right SRX Position",
+					-(m_talons[kBackRight].getSelectedSensorPosition(0) - m_zeroPositions[kBackRight]));
+
+			SmartDashboard.putNumber("Front Left SRX Speed",
+					m_talons[kFrontLeft].getSelectedSensorVelocity(0));
+			SmartDashboard.putNumber("Front Right SRX Speed",
+					-m_talons[kFrontRight].getSelectedSensorVelocity(0));
+			SmartDashboard.putNumber("Back Left SRX Speed",
+					m_talons[kBackLeft].getSelectedSensorVelocity(0));
+			SmartDashboard.putNumber("Back Right SRX Speed",
+					-m_talons[kBackRight].getSelectedSensorVelocity(0));
+			
+			/*
 			SmartDashboard.putNumber("Front Left SRX Position",
 					m_talons[kFrontLeft].getPosition() - m_zeroPositions[kFrontLeft]);
 			SmartDashboard.putNumber("Front Right SRX Position",
@@ -353,7 +404,8 @@ public class Drive extends Subsystem {
 					m_talons[kBackLeft].getSpeed());
 			SmartDashboard.putNumber("Back Right SRX Speed",
 					-m_talons[kBackRight].getSpeed());
-
+			*/
+			
 			SmartDashboard.putNumber("FL Desired Speed",
 					m_wheelSpeeds[kFrontLeft]);
 			SmartDashboard.putNumber("FR Desired Speed",
@@ -364,13 +416,13 @@ public class Drive extends Subsystem {
 					-m_wheelSpeeds[kBackRight]);
 			
 			SmartDashboard.putNumber("Front Left SRX Close loop Error",
-					m_talons[kFrontLeft].getClosedLoopError());
+					m_talons[kFrontLeft].getClosedLoopError(0));
 			SmartDashboard.putNumber("Front Right SRX Close loop Error",
-					-m_talons[kFrontRight].getClosedLoopError());
+					-m_talons[kFrontRight].getClosedLoopError(0));
 			SmartDashboard.putNumber("Back Left SRX Close loop Error",
-					m_talons[kBackLeft].getClosedLoopError());
+					m_talons[kBackLeft].getClosedLoopError(0));
 			SmartDashboard.putNumber("Back Right SRX Close loop Error",
-					-m_talons[kBackRight].getClosedLoopError());
+					-m_talons[kBackRight].getClosedLoopError(0));
 
 			SmartDashboard.putNumber("Front Left Current",
 					Robot.pdp.getCurrent(RobotMap.DRIVE_FRONT_LEFT_PDP));
@@ -382,13 +434,13 @@ public class Drive extends Subsystem {
 					Robot.pdp.getCurrent(RobotMap.DRIVE_BACK_RIGHT_PDP));
 
 			SmartDashboard.putNumber("Front Left Output Voltage",
-					m_talons[kFrontLeft].getOutputVoltage());
+					m_talons[kFrontLeft].getMotorOutputVoltage());
 			SmartDashboard.putNumber("Front Right Output Voltage",
-					-m_talons[kFrontRight].getOutputVoltage());
+					-m_talons[kFrontRight].getMotorOutputVoltage());
 			SmartDashboard.putNumber("Back Left Output Voltage",
-					m_talons[kBackLeft].getOutputVoltage());
+					m_talons[kBackLeft].getMotorOutputVoltage());
 			SmartDashboard.putNumber("Back Right Output Voltage",
-					-m_talons[kBackRight].getOutputVoltage());
+					-m_talons[kBackRight].getMotorOutputVoltage());
 
 			SmartDashboard.putNumber("Gyro",
 					Utils.twoDecimalPlaces(headingGyro.getFusedHeading()));
@@ -655,8 +707,8 @@ public class Drive extends Subsystem {
 		// delay between commands
 		// set all Talon SRX encoder values to zero
 		for (talonIndex = 0; talonIndex < kMaxNumberOfMotors; talonIndex++) {
-			m_talons[talonIndex].set(m_wheelSpeeds[talonIndex]);
-			
+			//m_talons[talonIndex].set(m_wheelSpeeds[talonIndex]);
+			m_talons[talonIndex].set(m_closedLoopMode2018, m_wheelSpeeds[talonIndex]);		
 		}
 
 	}

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.commands.Drive_Disable_MaintainHeading"/>
-<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.util.IOButton"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.buttons.Button"/>
 <fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.util.IOButtonOrButton"/>
 <fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.commands.Vision_Toggle_Front_Light"/>
@@ -56,8 +54,10 @@
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.buttons.JoystickButton"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.command.WaitCommand"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.command.WaitUntilCommand"/>
-<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.RobotMap.RobotDriveTrainSettings"/>
 <fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.commands.Kangaroo_Video_Select_USB"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DigitalInput"/>
 <fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.RobotMap"/>
+<fullyQualifiedTypeName name="com.ctre.phoenix.motorcontrol.FeedbackDevice"/>
+<fullyQualifiedTypeName name="com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX"/>
+<fullyQualifiedTypeName name="org.usfirst.frc3244.HungryVonHippo.RobotMap.RobotDriveTrainSettings"/>
 </qualifiedTypeNameHistroy>

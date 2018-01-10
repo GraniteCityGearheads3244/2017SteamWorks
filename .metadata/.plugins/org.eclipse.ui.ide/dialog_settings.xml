@@ -5,6 +5,8 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\FRC\3244\2018 PowerUp\2017SteamWorks"/>
+			<item value="C:\Users\Apple\Downloads\powerup2018-java-example-master\powerup2018-java-example-master\SingleMotor"/>
 			<item value="C:\FRC\2017\2017SteamWorks"/>
 			<item value="E:\FRC"/>
 			<item value="E:\FRC\2017"/>
